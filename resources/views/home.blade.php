@@ -1,23 +1,16 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<router-view name="dashboard"></router-view>
+<router-view name="tasks"></router-view>
+<router-view name="history"></router-view>
+<router-view name="customers"></router-view>
+<router-view name="companies"></router-view>
+<router-view name="persons"></router-view>
+<router-view name="exploration"></router-view>
+<router-view name="pipeline"></router-view>
+<router-view name="epost"></router-view>
+<router-view name="administration"></router-view>
 @endsection
+
+    

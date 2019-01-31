@@ -15,9 +15,13 @@
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('home');
+// })->middleware('auth');
+
+Route::get('/{any}', function () {
     return view('home');
-})->middleware('auth');
+})->middleware('auth')->where('any', '.*');
 
 Auth::routes();
 

@@ -14,7 +14,6 @@
 </div>
 <!-- ./wrapper -->
 
-
-<script src="/js/app.js"></script>
+<script src="/js/vueapp.js"></script>
 </body>
 </html>
