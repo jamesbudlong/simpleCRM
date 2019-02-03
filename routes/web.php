@@ -11,18 +11,25 @@
 |
 */
 
+Auth::routes();
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+Route::group(['middleware' => 'auth'], function() {
+    //Route::get('/home', 'DashboardController@index');
+    Route::get('/{any}', function () {
+        return view('home');    
+    })->middleware('auth')->where('any', '.*');
+});
 
 // Route::get('/', function () {
 //     return view('home');
 // })->middleware('auth');
 
-Route::get('/{any}', function () {
-    return view('home');
-})->middleware('auth')->where('any', '.*');
+// Route::get('/{any}', function () {
+//     return view('home');
+// })->middleware('auth')->where('any', '.*');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
