@@ -1,0 +1,32 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// AdminLTE
+@import '~admin-lte/dist/css/adminlte.css';
+
+// FontAwesome
+@import "~font-awesome/scss/font-awesome";
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.content-wrapper {
+  min-height: 100vh !important;
+}
+
+.router-link-exact-active{
+  background:rgba(255, 255, 255, 0.1);
+}
+
+.nav-linkey{
+  background:rgba(0, 16, 241, 0.1);
+}
