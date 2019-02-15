@@ -1,0 +1,302 @@
+<template>
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-success pull-right" v-on:click="seen1 = !seen1; seen2 = true;" v-if="seen1"><i class="fa fa-plus" aria-hidden="true"></i> Create</button>
+            <button class="btn btn-dark pull-right tasksBackButton" v-on:click="seen1 = true; seen2 = false; seen3 = false" v-if="seen2 || seen3"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button>
+        </div>
+        <div class="card-body">
+            <div v-if="seen1"><!-- task view -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                    <thead  class="thead-dark">
+                        <tr>
+                        <th>ID</th>
+                        <th>Responsible User</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Decay</th>
+                        <th>Comment</th>
+                        <th width="10%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="task, index in tasks">
+                            <td>{{ task.id }}</td>
+                            <td>{{ task.user_name }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>{{ task.priority }}</td>
+                            <td>{{ task.decay }}</td>
+                            <td>{{ task.comment }}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary" v-on:click="seen3 = true; seen1 = false; getTaskByID(task.id);">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"> Edit</i>
+                                </a>
+                                <!-- <a href="#" class="btn btn-danger" v-on:click="deleteEntry(task.id, index)">
+                                    <i class="fa fa-trash" aria-hidden="true"> Delete</i>
+                                </a> -->
+                            </td>
+                        </tr> 
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+            <div v-if="seen2"> <!-- add task form -->
+                <form v-on:submit="saveTaskForm()">   
+                    <div class="card-body col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Responsible User</label>
+                                <select v-model="tasksAdd.responsible_seller" class="form-control" required>
+                                    <option v-for="user in users" v-bind:value="user.id">
+                                        {{user.name}}
+                                    </option>
+                                </select>  
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Status</label>
+                                <select v-model="tasksAdd.status" class="form-control" required>
+                                    <option value="not_started">Not Started</option>
+                                    <option value="started">Started</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Priority</label>
+                                <select v-model="tasksAdd.priority" class="form-control" required>
+                                    <option value="low">Low</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Decay</label>
+                                <date-picker name="date" v-model="tasksAdd.decay" :config="datetimepicker_options" required></date-picker>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label class="control-label">Comment</label>
+                                <textarea rows="3" v-model="tasksAdd.comment" class="form-control" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <button class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Create</button>
+                        </div>
+                    </div>     
+                </form>
+            </div>
+            <div v-if="seen3"> <!-- edit task form -->
+                <!-- <form v-on:submit="updateContactForm(contacts_edit.id)">   
+                    <div class="card-body col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Firstname</label>
+                                <input type="text" v-model="contacts_edit.first_name" class="form-control">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">E-mail</label>
+                                <input type="text" v-model="contacts_edit.email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Lastname</label>
+                                <input type="text" v-model="contacts_edit.last_name" class="form-control">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Telephone</label>
+                                <input type="text" v-model="contacts_edit.telephone" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Title</label>
+                                <input type="text" v-model="contacts_edit.title" class="form-control">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="control-label">Mobile</label>
+                                <input type="text" v-model="contacts_edit.mobile" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label class="control-label">Comment</label>
+                                <textarea rows="3" v-model="contacts_edit.comment" class="form-control" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <button class="btn btn-success"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
+                        </div>
+                    </div>     
+                </form> -->
+            </div>
+        </div>
+    </div>
+
+
+    
+</template>
+
+<script>
+export default {
+    mounted() {
+        let app = this;
+        let id = app.$route.params.id;
+        let cust_id = app.$route.params.id;
+        ///console.log("asdasd "+ id);
+        this.getTasks(id);
+        this.getUsers();
+    },
+    data: function () {
+        return {
+            tasks: {},
+            tasksAdd: {},
+            tasksEdit: {},
+            users: {},
+            seen1: true,
+            seen2: false,
+            seen3: false,
+            date: null,
+            datetimepicker_options: {
+                format: 'DD.MM.YYYY hh:mm',
+                useCurrent: false,
+                showClear: true,
+                showClose: true,
+            }
+        }
+    },
+    methods: {
+        getUsers() {
+            axios.get('/user/getAllUsers')
+                .then(response => {
+                    this.users = response.data;
+                });
+        },
+        getTasks(id) {
+            axios.get('/api/v1/contacts/getAllTasksByCustomerID/' + id)
+                .then(response => {
+                    this.tasks = response.data;
+                });
+        },
+        getTaskByID(edit_id){
+            let app = this;
+            axios.get('/api/v1/tasks/' + edit_id)
+                .then(function (resp) {
+                    app.tasksEdit = resp.data;
+                })
+                .catch(function () {
+                    Vue.swal({
+                        position: 'center',
+                        type: 'error',
+                        title: 'Something went wrong! Cannot load task..',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                });
+        },
+        saveTaskForm(seen) { //ADD TASK
+            event.preventDefault();
+            var app = this;
+            var customer_id = app.$route.params.id;
+            var tasksAdd = app.tasksAdd;
+            var newTask = {tasksAdd,customer_id};
+
+            axios.post('/api/v1/tasks', newTask)
+                .then(function (resp) {
+                    Vue.swal({
+                        position: 'center',
+                        type: 'success',
+                        title: 'Task added..',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
+                    app.tasksAdd = {};
+                    $('.tasksBackButton').click();
+                    app.getTasks(customer_id);
+                })
+                .catch(function (resp) {
+                    //console.log(resp);
+                    Vue.swal({
+                        position: 'center',
+                        type: 'error',
+                        title: 'Something went wrong! Cannot add task..',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                });
+        },
+        // updateContactForm(contact_id) {
+        //     event.preventDefault();
+        //     var app = this;
+        //     var newContactUpdate = app.contacts_edit;
+        //     var customer_id = app.$route.params.id;
+        //     axios.patch('/api/v1/contacts/' + contact_id, newContactUpdate)
+        //         .then(function (resp) {
+        //             Vue.swal({
+        //                 position: 'center',
+        //                 type: 'success',
+        //                 title: 'Contact updated..',
+        //                 showConfirmButton: false,
+        //                 timer: 2000
+        //             });
+        //             app.contacts_edit = {};
+        //             $('.tasksBackButton').click();
+        //             app.getContacts(customer_id);
+        //         })
+        //         .catch(function (resp) {
+        //             console.log(resp);
+        //             Vue.swal({
+        //                 position: 'center',
+        //                 type: 'error',
+        //                 title: 'Something went wrong! Cannot update contact..',
+        //                 showConfirmButton: false,
+        //                 timer: 2000
+        //             });
+        //         });
+        // },
+        // deleteEntry(id, index) {
+        //     event.preventDefault();
+        //     var app = this;
+        //     var customer_id = app.$route.params.id;
+        //     Vue.swal({
+        //         title: 'Are you sure you want to delete this contact?',
+        //         text: "You won't be able to revert this!",
+        //         type: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#3085d6',
+        //         cancelButtonColor: '#d33',
+        //         confirmButtonText: 'Yes, delete it!'
+        //         }).then((result) => {
+        //         if (result.value) {
+        //             var app = this;
+        //             axios.delete('/api/v1/contacts/' + id)
+        //                 .then(function (resp) {
+        //                     Vue.swal({
+        //                         position: 'center',
+        //                         type: 'success',
+        //                         title: 'Contact deleted..',
+        //                         showConfirmButton: false,
+        //                         timer: 2000
+        //                     });
+        //                     app.getContacts(customer_id);
+        //                 })
+        //                 .catch(function (resp) {
+        //                     Vue.swal({
+        //                         position: 'center',
+        //                         type: 'error',
+        //                         title: 'Something went wrong! Cannot delete contact..',
+        //                         showConfirmButton: false,
+        //                         timer: 2000
+        //                     });
+        //                 });
+        //         }
+        //     })
+        // }
+    }
+}
+
+</script>
+
