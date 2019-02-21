@@ -15,6 +15,6 @@
 <!-- ./wrapper -->
 
 <script src="{{ URL::asset('js/vueapp.js') }}""></script>
-<script src="{{ URL::asset('js/app.js') }}""></script>
+<script src="{{ URL::asset('js/aoo.js') }}""></script>
 </body>
 </html>

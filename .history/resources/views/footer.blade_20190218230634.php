@@ -14,7 +14,7 @@
 </div>
 <!-- ./wrapper -->
 
-<script src="{{ URL::asset('js/vueapp.js') }}""></script>
-<script src="{{ URL::asset('js/app.js') }}""></script>
+<script src="/test/js/vueapp.js"></script>
+<script src="/test/js/app.js"></script>
 </body>
 </html>
